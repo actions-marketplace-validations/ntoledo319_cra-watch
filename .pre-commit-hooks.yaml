@@ -1,0 +1,17 @@
+- id: cra-watch
+  name: cra-watch (EU CRA Article 14 / CISA KEV screen)
+  description: >-
+    Screen declared dependencies against the CISA Known Exploited Vulnerabilities
+    catalogue. Fails only when something you ship is on the KEV list - the set that
+    can start an EU Cyber Resilience Act Article 14 24-hour reporting clock.
+  entry: cra-watch scan
+  language: python
+  pass_filenames: false
+  files: >-
+    (?x)^(
+      .*package-lock\.json|.*npm-shrinkwrap\.json|.*yarn\.lock|.*pnpm-lock\.yaml|
+      .*requirements(-dev)?\.txt|.*poetry\.lock|.*Pipfile\.lock|
+      .*go\.sum|.*Cargo\.lock|.*Gemfile\.lock|.*composer\.lock|
+      .*gradle\.lockfile|.*packages\.lock\.json
+    )$
+  stages: [pre-commit, manual]
