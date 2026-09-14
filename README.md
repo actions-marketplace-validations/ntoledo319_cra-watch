@@ -12,6 +12,10 @@ Note the wording. Not "critical". Not "CVSS 9.8". Not "there's a PoC on GitHub".
 **Actively exploited.** That is a far smaller set than your vulnerability scanner's
 output — and it is the only set that starts a 24-hour clock.
 
+**No install?** Paste a lockfile or SBOM into the free browser checker — it runs
+entirely client-side, your file contents never leave your machine:
+<https://cra.toledotechnologies.com/check/>
+
 Most tools hand you 400 CVEs and let you work out which ones matter. `cra-watch`
 answers one question:
 
