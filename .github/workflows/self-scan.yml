@@ -1,0 +1,14 @@
+name: cra-watch self-scan
+on:
+  schedule: [{ cron: "0 6 * * *" }]
+  push: { branches: [main] }
+  workflow_dispatch:
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan this repo with cra-watch
+        uses: ./
+        with:
+          fail-on-match: 'false'

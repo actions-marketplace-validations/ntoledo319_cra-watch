@@ -1,0 +1,57 @@
+name: 'cra-watch'
+description: 'Screen your dependencies against the CISA KEV catalogue for EU Cyber Resilience Act Article 14 exposure.'
+author: 'Toledo Technologies LLC'
+branding:
+  icon: 'shield'
+  color: 'red'
+inputs:
+  path:
+    description: 'Directory to scan'
+    required: false
+    default: '.'
+  sbom:
+    description: 'Path to a CycloneDX or SPDX JSON SBOM (scanned instead of walking the tree)'
+    required: false
+    default: ''
+  fail-on-match:
+    description: 'Fail the job when a known-exploited component is found'
+    required: false
+    default: 'true'
+  json-output:
+    description: 'Also write machine-readable results to this path'
+    required: false
+    default: ''
+outputs:
+  matches:
+    description: 'Number of KEV matches found'
+    value: ${{ steps.scan.outputs.matches }}
+runs:
+  using: 'composite'
+  steps:
+    - id: scan
+      shell: bash
+      run: |
+        set -o pipefail
+        ARGS="${{ inputs.path }}"
+        if [ -n "${{ inputs.sbom }}" ]; then ARGS="--sbom ${{ inputs.sbom }}"; fi
+
+        if [ -n "${{ inputs.json-output }}" ]; then
+          python3 "${{ github.action_path }}/cra_watch.py" scan $ARGS --json > "${{ inputs.json-output }}" || true
+          MATCHES=$(python3 -c "import json,sys; print(json.load(open('${{ inputs.json-output }}')).get('kev_matches',0))" 2>/dev/null || echo 0)
+        else
+          MATCHES=0
+        fi
+
+        set +e
+        python3 "${{ github.action_path }}/cra_watch.py" scan $ARGS
+        CODE=$?
+        set -e
+
+        if [ "$MATCHES" = "0" ] && [ "$CODE" = "1" ]; then MATCHES=1; fi
+        echo "matches=$MATCHES" >> "$GITHUB_OUTPUT"
+
+        if [ "$CODE" = "1" ] && [ "${{ inputs.fail-on-match }}" = "true" ]; then
+          echo "::error title=Known-exploited component::A component in your dependency graph appears on the CISA KEV catalogue. This may be an EU CRA Article 14 reporting question. A human decision is required."
+          exit 1
+        fi
+        exit 0
