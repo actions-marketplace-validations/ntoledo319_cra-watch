@@ -54,6 +54,27 @@ git clone https://github.com/ntoledo319/cra-watch.git
 cd cra-watch && python3 cra_watch.py scan /path/to/your/project
 ```
 
+Homebrew:
+
+```bash
+brew tap ntoledo319/cra
+brew install cra-watch
+```
+
+As a pre-commit hook — runs only when a lockfile changes, so it never blocks a
+commit in a repo that has no dependency manifest:
+
+```yaml
+repos:
+  - repo: https://github.com/ntoledo319/cra-watch
+    rev: v1.0.0
+    hooks:
+      - id: cra-watch
+```
+
+Exit codes are CI-shaped: `0` nothing on KEV, `1` at least one KEV match, `2` no
+dependency manifests found.
+
 ## Use
 
 ```bash
