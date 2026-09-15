@@ -195,6 +195,12 @@ The **CRA 24-Hour Reporting Kit** covers that: decision tree, the three clocks,
 fill-in-the-blank early-warning / 72-hour / final-report templates, an evidence
 log, and a 30-minute tabletop dry-run. <https://cra.toledotechnologies.com>
 
+## Further reading
+
+[The EU Cyber Resilience Act and the new Product Liability Directive - what an engineer actually
+has to do](https://dev.to/nicholas_toledo_5a6f9e576/the-eu-cyber-resilience-act-and-the-new-product-liability-directive-what-an-engineer-actually-has-1l2a) - the two dates, the two different questions they ask, real commands against the
+KEV/OSV/endoflife APIs, and the things the law does not say. No account needed to read it.
+
 ## Licence
 
 MIT © Toledo Technologies LLC. Use it, fork it, ship it in your pipeline.
